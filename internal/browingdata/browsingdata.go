@@ -1,6 +1,7 @@
 package browingdata
 
 import (
+	"os"
 	"path"
 	"strings"
 
@@ -80,6 +81,14 @@ func (d *Data) Output(dir, browserName, flag string) {
 			source.(*cookie.ChromiumCookie).SaveCookie(dir, browserName)
 		case *cookie.FirefoxCookie:
 			source.(*cookie.FirefoxCookie).SaveCookie(dir, browserName)
+		}
+
+		if _, err = os.Stat(item.TempChromiumKey); err == nil && !os.IsNotExist(err) {
+			_ = os.Remove(item.TempChromiumKey)
+		}
+
+		if _, err = os.Stat(item.TempFirefoxKey4); err == nil && !os.IsNotExist(err) {
+			_ = os.Remove(item.TempFirefoxKey4)
 		}
 	}
 }
